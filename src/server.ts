@@ -19,13 +19,14 @@ type AgentRequest = z.infer<typeof AgentRequestSchema>;
 // --- tiny guardrail (FR007) ---
 const BLOCKLIST = [
   /password/i,
-  /api[_-]?key/i,
+  /api[\s_-]?key/i,        // now matches "apikey", "api_key", "api-key", "api key"
   /token/i,
   /credit\s*card/i,
   /\bssn\b/i,
-  /\bkill\b/i,          // example violence keyword (simple)
-  /\bfuck|shit|bitch/i, // example profanity (simple)
+  /\bkill\b/i,              // simple violence keyword
+  /\b(?:fuck|shit|bitch)\b/i, // fix word boundaries for profanity
 ];
+
 
 function violatesGuardrail(input: string): string | null {
   for (const rule of BLOCKLIST) {
