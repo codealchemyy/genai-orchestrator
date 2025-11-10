@@ -2,12 +2,14 @@
 import { echoAgent } from "./echoAgent.js";
 import { researcherAgent } from "./researcherAgent.js";
 import { summariserAgent } from "./summariserAgent.js";
+import { factCheckerAgent } from "./factCheckerAgent.js";   // <-- add this
 import type { AgentFn, AgentInput, AgentOutput } from "./types.js";
 
 /**
  * Minimal orchestrator router (prefix-based):
  * - "research: ..."   -> researcherAgent
  * - "summarise: ..."  -> summariserAgent
+ * - "fact: ..."       -> factCheckerAgent
  * - otherwise         -> echoAgent
  */
 export const orchestrate: AgentFn = async (input: AgentInput): Promise<AgentOutput> => {
@@ -21,6 +23,12 @@ export const orchestrate: AgentFn = async (input: AgentInput): Promise<AgentOutp
   if (p.toLowerCase().startsWith("summarise:")) {
     const result = await summariserAgent({ prompt: p.replace(/^summarise:\s*/i, "") });
     return { content: result.content, meta: { used: "summariserAgent" } };
+  }
+
+  // NEW ROUTE ↓
+  if (p.toLowerCase().startsWith("fact:")) {
+    const result = await factCheckerAgent({ prompt: p.replace(/^fact:\s*/i, "") });
+    return { content: result.content, meta: { used: "factCheckerAgent" } };
   }
 
   const result = await echoAgent({ prompt: p });
