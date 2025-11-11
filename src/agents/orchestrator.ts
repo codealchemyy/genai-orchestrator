@@ -4,7 +4,7 @@ import { researcherAgent } from "./researcherAgent.js";
 import { summariserAgent } from "./summariserAgent.js";
 import { factCheckerAgent } from "./factCheckerAgent.js";   // <-- add this
 import type { AgentFn, AgentInput, AgentOutput } from "./types.js";
-import { studentResearcherAgent } from "./studentResearcherAgent.js";
+import studentResearcherAgent from "./studentResearcherAgent.js"; // default import
 
 /**
  * Minimal orchestrator router (prefix-based):
@@ -33,7 +33,8 @@ export const orchestrate: AgentFn = async (input: AgentInput): Promise<AgentOutp
   }
 
   if (p.toLowerCase().startsWith("student:")) {
-  const result = await studentResearcherAgent({ prompt: p.replace(/^student:\s*/i, "") });
+  const q = p.replace(/^student:\s*/i, "");
+  const result = await studentResearcherAgent({ prompt: q });
   return { content: result.content, meta: { used: "studentResearcherAgent" } };
 }
 
