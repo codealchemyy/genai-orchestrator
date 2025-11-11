@@ -1,4 +1,3 @@
-// src/agents/summariserAgent.ts
 import type { AgentFn } from "./types.js";
 
 /**

@@ -1,7 +1,21 @@
 import type { AgentFn } from "./types.js";
+import { defineTerm } from "../tools/dictionary.js"; // ← add this line
+
 
 /** Minimal “Research Assistant for Students” (MVP). */
 const studentResearcherAgent: AgentFn = async ({ prompt }) => {
+    const p = (prompt ?? "").trim();
+
+  // NEW: dictionary branch (MVP)
+  if (/^define:\s*/i.test(p)) {
+    const term = p.replace(/^define:\s*/i, "");
+    const entry = await defineTerm(term); // expects { word, definition } (your tool)
+    return {
+      content: `DEFINITION: ${entry.word}\n${entry.definition}`,
+      meta: { role: "student-researcher", tool: "dictionary", stub: false },
+    };
+  }
+
   const topic = (prompt ?? "").trim() || "the topic";
   const shortSummary = `Short summary: ${topic} — core idea in one line.`;
   const studyBullets = [

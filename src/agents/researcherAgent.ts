@@ -1,5 +1,7 @@
 // src/agents/researcherAgent.ts
 import { AgentFn } from "./types.js";
+import { fetchWikiSummary } from "../tools/wiki.js";
+
 
 /**
  * Minimal "Researcher" sub-agent.
@@ -7,13 +9,18 @@ import { AgentFn } from "./types.js";
  * (We'll replace the stub with a real model/tool call later.)
  */
 export const researcherAgent: AgentFn = async ({ prompt }) => {
+    const summary = await fetchWikiSummary(prompt);
+
   return {
     content: [
       "RESEARCH NOTES",
       `- Topic: ${prompt}`,
-      "- Findings: (stub for now)",
-      "- Sources: (stub for now)"
+      "",
+      "Summary:",
+      summary,
+      "",
+      "(Source: Wikipedia API — validated via Zod)",
     ].join("\n"),
-    meta: { role: "researcher", stub: true }
+    meta: { role: "researcher", tool: "fetchWikiSummary" }
   };
 };
