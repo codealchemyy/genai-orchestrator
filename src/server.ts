@@ -3,9 +3,13 @@ import express, { Request, Response } from "express";
 import { z } from "zod";
 import "dotenv/config";
 import { orchestrate } from "./agents/orchestrator.js"; // NOTE .js
+import swaggerRouter from "./swagger.js";
+
 
 const app = express();
 app.use(express.json());
+app.use("/docs", swaggerRouter);
+
 
 // ---- Zod schema (FR005)
 const AgentRequestSchema = z.object({
