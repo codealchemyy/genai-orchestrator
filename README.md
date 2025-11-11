@@ -5,6 +5,11 @@ Minimal Express + TypeScript agent service.
 
 ## UML Diagram
 
-The agent orchestration flow for this service:
+The full agent orchestration diagram is located here:
 
-![UML Sequence Diagram](<REPLACE_WITH_RELATIVE_PATH_TO_YOUR_IMAGE>)
+- [`docs/uml.md`](docs/uml.md)
+
+This diagram illustrates:
+- The /agent request flow
+- How the orchestrator selects a sub-agent
+- Where tools and the local model integrate
