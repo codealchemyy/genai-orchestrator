@@ -49,3 +49,18 @@ The orchestrator workflow is documented here:
 git clone <git@github.com:codealchemyy/genai-orchestrator.git>
 cd genai-orchestrator
 npm install
+
+## API Documentation
+
+This project includes live interactive docs:
+
+- Swagger UI: http://localhost:4000/docs  
+- Health Check: http://localhost:4000/health
+
+To test the main endpoint:
+
+```bash
+curl -X POST http://localhost:4000/agent \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "summarise: Neural networks are inspired by the brain."}'
+
