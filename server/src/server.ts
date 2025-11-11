@@ -4,9 +4,12 @@ import { z } from "zod";
 import "dotenv/config";
 import { orchestrate } from "./agents/orchestrator.js"; // NOTE .js
 import swaggerRouter from "./swagger.js";
+import cors from "cors";
+
 
 
 const app = express();
+app.use(cors({ origin: "http://localhost:4000" })); // allow your Next.js dev server
 app.use(express.json());
 app.use("/docs", swaggerRouter);
 
