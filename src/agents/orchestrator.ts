@@ -16,20 +16,21 @@ import studentResearcherAgent from "./studentResearcherAgent.js"; // default imp
 export const orchestrate: AgentFn = async (input: AgentInput): Promise<AgentOutput> => {
   const p = input.prompt.trim();
 
-  if (p.toLowerCase().startsWith("research:")) {
-    const result = await researcherAgent({ prompt: p.replace(/^research:\s*/i, "") });
-    return { content: result.content, meta: { used: "researcherAgent" } };
+  if (p.toLowerCase().startsWith("research+:")) {
+    const result = await researcherAgent({ prompt: p.replace(/^research\+:\s*/i, "+: ") });
+    return { content: result.content, meta: { used: "researcherAgent", ...(result.meta ?? {}) } };
   }
 
   if (p.toLowerCase().startsWith("summarise:")) {
-    const result = await summariserAgent({ prompt: p.replace(/^summarise:\s*/i, "") });
-    return { content: result.content, meta: { used: "summariserAgent" } };
+    const s = await summariserAgent({ prompt: p.replace(/^summarise:\s*/i, "") });
+    return { content: s.content, meta: { used: "summariserAgent", ...(s.meta ?? {}) } };
   }
+
 
   // NEW ROUTE ↓
   if (p.toLowerCase().startsWith("fact:")) {
-    const result = await factCheckerAgent({ prompt: p.replace(/^fact:\s*/i, "") });
-    return { content: result.content, meta: { used: "factCheckerAgent" } };
+    const stu = await factCheckerAgent({ prompt: p.replace(/^fact:\s*/i, "") });
+    return { content: stu.content, meta: { used: "factCheckerAgent", ...(stu.meta ?? {}) } };
   }
 
   if (p.toLowerCase().startsWith("student:")) {
@@ -39,6 +40,6 @@ export const orchestrate: AgentFn = async (input: AgentInput): Promise<AgentOutp
 }
 
 
-  const result = await echoAgent({ prompt: p });
-  return { content: result.content, meta: { used: "echoAgent" } };
+  const e = await echoAgent({ prompt: p });
+  return { content: e.content, meta: { used: "echoAgent", ...(e.meta ?? {}) } };
 };

@@ -54,9 +54,19 @@ app.post("/agent", async (req: Request, res: Response) => {
       meta: result.meta ?? {},
     });
   } catch (err: any) {
-    console.error("Agent error:", err?.message || err);
-    return res.status(500).json({ success: false, error: "Agent call failed" });
-  }
+    const detail =
+        (process.env.NODE_ENV ?? "").toLowerCase() === "development"
+        ? (err?.stack || err?.message || String(err))
+        : undefined;
+
+    console.error("Agent error:", detail ?? err);
+    return res.status(500).json({
+        success: false,
+        error: "Agent call failed",
+        detail, // only present in dev
+    });
+    }
+
 });
 
 const PORT = process.env.PORT ?? 3000;
