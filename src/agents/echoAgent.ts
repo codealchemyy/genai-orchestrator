@@ -1,4 +1,4 @@
-// src/agents/echoAgent.ts
+/* // src/agents/echoAgent.ts
 import { OpenAI } from "openai";
 import { AgentFn } from "./types.js";  // NOTE: .js extension for NodeNext
 
@@ -17,4 +17,13 @@ export const echoAgent: AgentFn = async ({ prompt }) => {
   // @ts-ignore
   const text: string = (res as any).output_text ?? "No output";
   return { content: `ECHO: ${text}` };
+};
+ */
+
+// src/agents/echoAgent.ts
+import { AgentFn } from "./types.js";
+
+export const echoAgent: AgentFn = async ({ prompt }) => {
+  // MVP: no external calls, just echo back
+  return { content: `ECHO: ${prompt}` };
 };
