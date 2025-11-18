@@ -3,9 +3,10 @@ import type { AgentFn } from "./types.js";
 import { defineTerm } from "../tools/dictionary.js";
 
 /**
- * "Fact-Checker" sub-agent (MVP).
- * Uses dictionary tool when checking a concept.
+Checks or defines a fact
+using the dictionary tool.
  */
+
 export const factCheckerAgent: AgentFn = async ({ prompt }) => {
   const term = (prompt ?? "").trim().toLowerCase();
   if (!term) {

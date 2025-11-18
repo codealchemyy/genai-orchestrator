@@ -1,4 +1,4 @@
-// src/server.ts
+// ...existing code...
 import express, { Request, Response } from "express";
 import { z } from "zod";
 import "dotenv/config";
@@ -6,13 +6,14 @@ import { orchestrate } from "./agents/orchestrator.js"; // NOTE .js
 import swaggerRouter from "./swagger.js";
 import cors from "cors";
 
-
+/* 1. Validates input with **Zod** (`prompt` must be a non-empty string).
+2. Passes the prompt to `orchestrate()` (the central decision logic).
+3. Returns the agent’s structured response as JSON. */
 
 const app = express();
-app.use(cors({ origin: "http://localhost:4000" })); // allow your Next.js dev server
+app.use(cors({ origin: "http://localhost:3000" })); // allow your Next.js dev server
 app.use(express.json());
 app.use("/docs", swaggerRouter);
-
 
 // ---- Zod schema (FR005)
 const AgentRequestSchema = z.object({
@@ -49,11 +50,18 @@ app.post("/agent", async (req: Request, res: Response) => {
   }
   const { prompt } = parsed.data as AgentRequest;
 
++  console.log(`[server] /agent received prompt="${prompt.slice(0,120)}"`);
+
   const guardIssue = violatesGuardrail(prompt);
   if (guardIssue) return res.status(400).json({ success: false, error: guardIssue });
 
   try {
     const result = await orchestrate({ prompt });
+
++    console.log(`[server] orchestrator returned meta=${JSON.stringify(result.meta ?? {})}`);
++    console.log(`[server] orchestrator answer preview="${String(result.content ?? "").slice(0,120)}"`);
+
+    // Return a stable structured response (was returning raw string and had unreachable code)
     return res.status(200).json({
       success: true,
       echo: prompt,
@@ -72,7 +80,7 @@ app.post("/agent", async (req: Request, res: Response) => {
         error: "Agent call failed",
         detail, // only present in dev
     });
-    }
+  }
 
 });
 

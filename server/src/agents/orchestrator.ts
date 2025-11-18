@@ -1,4 +1,3 @@
-// src/agents/orchestrator.ts
 import { echoAgent } from "./echoAgent.js";
 import { researcherAgent } from "./researcherAgent.js";
 import { summariserAgent } from "./summariserAgent.js";
@@ -6,6 +5,12 @@ import { factCheckerAgent } from "./factCheckerAgent.js";
 import studentResearcherAgent from "./studentResearcherAgent.js";
 import type { AgentFn, AgentInput, AgentOutput } from "./types.js";
 import { ACADEMY_NAME } from "../academy.js";
+
+/* Orchestrator: The brain:
+decides which agent to use based on
+the prompt keyword
+(summarize, research, fact, student,
+or fallback to echo). */
 
 export const orchestrate: AgentFn = async (input: AgentInput): Promise<AgentOutput> => {
   const p = input.prompt.trim();

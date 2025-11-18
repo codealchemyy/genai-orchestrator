@@ -8,9 +8,8 @@ const DefinitionSchema = z.object({
 });
 
 /**
- * Minimal dictionary lookup (MVP).
- * No API calls yet — just a tiny internal lookup table.
- * We'll expand to real API later if desired.
+ Defines terms
+ (acts like a small built-in dictionary).
  */
 export async function defineTerm(term: string): Promise<string> {
   const lookup: Record<string, string> = {

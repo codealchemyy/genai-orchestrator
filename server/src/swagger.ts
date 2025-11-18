@@ -2,6 +2,8 @@
 import { Router } from "express";
 import swaggerUi from "swagger-ui-express";
 
+/* Enables Swagger UI documentation. */
+
 const router = Router();
 
 // ultra-minimal OpenAPI spec for our two routes

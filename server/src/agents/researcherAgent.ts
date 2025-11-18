@@ -3,6 +3,8 @@ import type { AgentFn } from "./types.js";
 import { fetchWikiSummary } from "../tools/wiki.js";
 import { llm } from "../llm.js";
 
+/* Fetches info from tools like Wikipedia. */
+
 export const researcherAgent: AgentFn = async ({ prompt }) => {
   const p = (prompt ?? "").trim();
 

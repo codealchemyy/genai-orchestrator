@@ -1,6 +1,10 @@
 // src/llm.ts
 import { OpenAI } from "openai";
 
+/* The AI core — decides which model to call:
+→ Ollama (local, for dev) or OpenAI
+(cloud, for prod). */
+
 const OLLAMA_BASE = process.env.OLLAMA_BASE ?? "http://localhost:11434";
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL ?? "llama3.1:8b";
 const OPENAI_MODEL = process.env.OPENAI_MODEL ?? "gpt-4o-mini";
