@@ -1,7 +1,8 @@
 // src/tools/wiki.ts
 import { z } from "zod";
 
-// Very small schema for the piece we care about
+/* Fetches data from Wikipedia API. */
+
 const WikiExtractSchema = z.object({
   extract: z.string().default(""),
 });
