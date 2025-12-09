@@ -2,9 +2,19 @@
 
 import { useState } from "react";
 
+type ApiResponse = {
+  success: boolean;
+  answer?: string;
+  echo?: string;
+  meta?: Record<string, unknown>;
+  error?: string;
+  detail?: string;
+};
+
+
 export default function Home() {
   const [prompt, setPrompt] = useState("");
-  const [response, setResponse] = useState<string | null>(null);
+  const [response, setResponse] = useState<ApiResponse | string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function sendPrompt() {
@@ -18,9 +28,14 @@ export default function Home() {
         body: JSON.stringify({ prompt }),
       });
 
-      const data = await res.json();
-      setResponse(JSON.stringify(data, null, 2));
-    } catch (err) {
+      const data = await res.json() as ApiResponse;
+      setResponse(data);
+      console.log(data)
+
+/*       setResponse(typeof data === "string" ? data : data.answer ?? "(no answer)");
+ */
+/*       setResponse(JSON.stringify(data, null, 2));
+ */    } catch (err) {
       setResponse("Request failed. Is the server running?");
     } finally {
       setLoading(false);
@@ -47,7 +62,9 @@ export default function Home() {
 
       {response && (
         <pre className="whitespace-pre-wrap bg-gray-100 p-4 rounded text-sm">
-          {response}
+          {typeof response === "string"
+            ? response
+            : response.answer ?? JSON.stringify(response, null, 2)}
         </pre>
       )}
     </div>
